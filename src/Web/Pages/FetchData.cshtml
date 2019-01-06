@@ -1,0 +1,31 @@
+﻿@page
+@model FetchDataModel
+@{
+    ViewData["Title"] = "Fetch Data";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<table class='table table-striped' *ngIf="forecasts">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Temp. (C)</th>
+            <th>Temp. (F)</th>
+            <th>Summary</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Forecasts)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.DateFormatted)</td>
+                <td>@Html.DisplayFor(modelItem => item.TemperatureC)</td>
+                <td>@Html.DisplayFor(modelItem => item.TemperatureF)</td>
+                <td>@Html.DisplayFor(modelItem => item.Summary)</td>
+            </tr>
+        }
+    </tbody>
+</table>
