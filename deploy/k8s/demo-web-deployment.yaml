@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment # 定义Kubernetes资源的类型为Deployment
+metadata:
+  name: demo-web-deployment # 定义资源的名称
+  labels:
+    app: demo-web-deployment
+spec:  # 定义资源的状态。
+  replicas: 2 # 定义我们想运行多少个Pod，在这里我们希望运行2个
+  selector:
+    matchLabels: # 定义该部署匹配哪些Pod
+      app: demo-web
+  minReadySeconds: 5 # 可选，指定Pod可以变成可用状态的最小秒数，默认是0
+  strategy: # 指定更新版本时，部署使用的策略
+    type: RollingUpdate # 策略类型，使用RollingUpdate可以保证部署期间服务不间断
+    rollingUpdate:
+      maxUnavailable: 1 # 部署时最大允许停止的Pod数量（与replicas相比）
+      maxSurge: 1 # 部署时最大允许创建的Pod数量（与replicas相比）
+  template: # 用来指定Pod的模板，与Pod的定义类似
+    metadata:
+      labels: # 根据模板创建的Pod会被贴上该标签，与上面的matchLabels对应
+        app: demo-web
+    spec:
+      containers:
+        - name: web
+          image: rainingnight/aspnetcore-web
+          imagePullPolicy: Always # 默认是IfNotPresent，如果设置成Always，则每一次部署都会重新拉取容器映像（否则，如果本地存在指定的镜像版本，就不会再去拉取）
+          ports:
+            - containerPort: 80
+          env:
+            - name: ApiBaseUrl
+              value: "http://demo-api-service"

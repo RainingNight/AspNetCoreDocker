@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-web-copy
+  labels:
+    app: demo-web
+spec:
+  containers:
+    - name: web
+      image: rainingnight/aspnetcore-web      
+      ports:
+        - containerPort: 80

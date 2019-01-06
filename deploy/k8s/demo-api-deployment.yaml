@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-api-deployment
+  labels:
+    app: demo-api-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: demo-api
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: demo-api
+    spec:
+      containers:
+        - name: api
+          image: rainingnight/aspnetcore-api
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80

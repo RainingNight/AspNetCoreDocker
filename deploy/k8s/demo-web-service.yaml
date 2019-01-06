@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service # 定义Kubernetes资源的类型为Service
+metadata:
+  name: demo-web-service # 定义资源的名称
+spec:
+  selector: # 指定对应的Pod
+    app: demo-web # 指定Pod的标签为demo-web
+  ports:
+  - protocol: TCP # 协议类型
+    port: 80 # 指定Service访问的端口
+    targetPort: 80 # 指定Service转发请求的端口
+    nodePort: 30000
+  type: NodePort # 指定Service的类型，在这里使用NodePort来对外访问
